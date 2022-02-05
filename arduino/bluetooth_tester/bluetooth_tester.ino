@@ -1,6 +1,3 @@
-#include <ArduinoJson.h>
-
-
 
 /*
   LED
@@ -20,6 +17,7 @@
 */
 
 #include <ArduinoBLE.h>
+
 #include "AS726X.h"
 #include <math.h>
 
@@ -30,19 +28,16 @@ AS726X sensor;
 BLEService ledService("180F"); // BLE LED Service
 
 // BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
-BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
-BLEByteCharacteristic sensorR("2A58", BLERead | BLEWrite);
-BLEByteCharacteristic sensorS("2A59", BLERead | BLEWrite);
-BLEByteCharacteristic sensorT("2A60", BLERead | BLEWrite);
-BLEByteCharacteristic sensorU("2A61", BLERead | BLEWrite);
-BLEByteCharacteristic sensorV("2A62", BLERead | BLEWrite);
-BLEByteCharacteristic sensorW("2A58", BLERead | BLEWrite);
+BLECharCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
+BLECharCharacteristic sensorR("2A58", BLERead | BLEWrite);
+BLECharCharacteristic sensorS("2A59", BLERead | BLEWrite);
+BLECharCharacteristic sensorT("2A60", BLERead | BLEWrite);
+BLECharCharacteristic sensorU("2A61", BLERead | BLEWrite);
+BLECharCharacteristic sensorV("2A62", BLERead | BLEWrite);
+BLECharCharacteristic sensorW("2A58", BLERead | BLEWrite);
 
 const int ledPin = LED_BUILTIN; // pin to use for the LED
 
-StaticJsonDocument<200> sensor_data;
-
-void ftoa(float, char*, int); //initialize function
 
 void setup() {
   Wire.begin();
@@ -131,12 +126,12 @@ void loop() {
               sensor_data["w"] = String(sensor.getCalibratedW(), 2);
               serializeJson(sensor_data, please);
               */
-              sensorR.writeValue(sensor.getCalibratedR());
-              sensorS.writeValue(sensor.getCalibratedS());
-              sensorT.writeValue(sensor.getCalibratedT());
-              sensorU.writeValue(sensor.getCalibratedU());
-              sensorV.writeValue(sensor.getCalibratedV());
-              sensorW.writeValue(sensor.getCalibratedW());
+              sensorR.writeValue(map(sensor.getCalibratedR(), 0, 3500, 0, 255));
+              sensorS.writeValue(map(sensor.getCalibratedS(), 0, 3500, 0, 255));
+              sensorT.writeValue(map(sensor.getCalibratedT(), 0, 3500, 0, 255));
+              sensorU.writeValue(map(sensor.getCalibratedU(), 0, 3500, 0, 255));
+              sensorV.writeValue(map(sensor.getCalibratedV(), 0, 3500, 0, 255));
+              sensorW.writeValue(map(sensor.getCalibratedW(), 0, 3500, 0, 255));
             }
             break;
           case 02:
