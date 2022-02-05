@@ -1,3 +1,7 @@
+#include <ArduinoJson.h>
+
+
+
 /*
   LED
 
@@ -17,6 +21,9 @@
 
 #include <ArduinoBLE.h>
 #include "AS726X.h"
+#include <math.h>
+
+
 
 AS726X sensor;
 
@@ -24,9 +31,18 @@ BLEService ledService("180F"); // BLE LED Service
 
 // BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
 BLEByteCharacteristic switchCharacteristic("2A57", BLERead | BLEWrite);
-BLEByteCharacteristic sensorCharacteristic("2A58", BLEWrite | BLERead);
+BLEByteCharacteristic sensorR("2A58", BLERead | BLEWrite);
+BLEByteCharacteristic sensorS("2A59", BLERead | BLEWrite);
+BLEByteCharacteristic sensorT("2A60", BLERead | BLEWrite);
+BLEByteCharacteristic sensorU("2A61", BLERead | BLEWrite);
+BLEByteCharacteristic sensorV("2A62", BLERead | BLEWrite);
+BLEByteCharacteristic sensorW("2A58", BLERead | BLEWrite);
 
 const int ledPin = LED_BUILTIN; // pin to use for the LED
+
+StaticJsonDocument<200> sensor_data;
+
+void ftoa(float, char*, int); //initialize function
 
 void setup() {
   Wire.begin();
@@ -45,6 +61,8 @@ void setup() {
   digitalWrite(LEDR, HIGH);          // will turn the LED off
   digitalWrite(LEDG, HIGH);        // will turn the LED off
   digitalWrite(LEDB, HIGH); 
+
+  //set up json document 
   
   // begin initialization
   if (!BLE.begin()) {
@@ -59,7 +77,12 @@ void setup() {
 
   // add the characteristic to the service
   ledService.addCharacteristic(switchCharacteristic);
-  ledService.addCharacteristic(sensorCharacteristic);
+  ledService.addCharacteristic(sensorR);
+  ledService.addCharacteristic(sensorS);
+  ledService.addCharacteristic(sensorT);
+  ledService.addCharacteristic(sensorU);
+  ledService.addCharacteristic(sensorV);
+  ledService.addCharacteristic(sensorW);
 
   // add service
   BLE.addService(ledService);
@@ -99,18 +122,21 @@ void loop() {
             if (sensor.getVersion() == SENSORTYPE_AS7263)
             {
               //Near IR readings
-              Serial.print(" Reading: R[");
-              Serial.print(sensor.getCalibratedR(), 2);
-              Serial.print("] S[");
-              Serial.print(sensor.getCalibratedS(), 2);
-              Serial.print("] T[");
-              Serial.print(sensor.getCalibratedT(), 2);
-              Serial.print("] U[");
-              Serial.print(sensor.getCalibratedU(), 2);
-              Serial.print("] V[");
-              Serial.print(sensor.getCalibratedV(), 2);
-              Serial.print("] W[");
-              Serial.print(sensor.getCalibratedW(), 2);
+              /*
+              sensor_data["r"] = String(sensor.getCalibratedR(), 2);
+              sensor_data["s"] = String(sensor.getCalibratedS(), 2);
+              sensor_data["t"] = String(sensor.getCalibratedT(), 2);
+              sensor_data["u"] = String(sensor.getCalibratedU(), 2);
+              sensor_data["v"] = String(sensor.getCalibratedV(), 2);
+              sensor_data["w"] = String(sensor.getCalibratedW(), 2);
+              serializeJson(sensor_data, please);
+              */
+              sensorR.writeValue(sensor.getCalibratedR());
+              sensorS.writeValue(sensor.getCalibratedS());
+              sensorT.writeValue(sensor.getCalibratedT());
+              sensorU.writeValue(sensor.getCalibratedU());
+              sensorV.writeValue(sensor.getCalibratedV());
+              sensorW.writeValue(sensor.getCalibratedW());
             }
             break;
           case 02:
