@@ -24,15 +24,29 @@ import com.punchthrough.blestarterappandroid.ble.printProperties
 //import kotlinx.android.synthetic.main.row_characteristic.view.characteristic_properties
 //import kotlinx.android.synthetic.main.row_characteristic.view.characteristic_uuid
 import org.jetbrains.anko.layoutInflater
+import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
 
-class CharacteristicAdapter(
-    private val items: List<BluetoothGattCharacteristic>
+class CharacteristicAdapter(private val items: List<BluetoothGattCharacteristic>)
 //    private val onClickListener: ((characteristic: BluetoothGattCharacteristic) -> Unit)
-    )
+//    )
     //: RecyclerView.Adapter<CharacteristicAdapter.ViewHolder>()
     {
-
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val view = parent.context.layoutInflater.inflate(
+                R.layout.row_characteristic,
+                parent,
+                false
+            )
+            return RecyclerView.ViewHolder(view, onClickListener)
+        }
         //access hexadecimal values from "items" which is list of characteristics.
+        fun getItemCount() = items.size
+        val instances_hex = items
+//        for (i in 0..getItemCount()){
+//            instances_hex[i] = items[i].value
+//        }
+        Log.d("BLE_result", "Got instances_hex: $instances_hex")
         //this should have each of the 6 channels' values
         // for each of these 6 hex values, convert to number using ascii
         // convert the 6 numbers into a JSON string called instances
@@ -40,16 +54,8 @@ class CharacteristicAdapter(
         // use an enum to map 0/1/2 back to "unripe", "perfectly ripe", or "overripe"
         // Print this value to a string attached to the "result" textview
 
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val view = parent.context.layoutInflater.inflate(
-//            R.layout.row_characteristic,
-//            parent,
-//            false
-//        )
-//        return ViewHolder(view, onClickListener)
-//    }
+
 //
-//    override fun getItemCount() = items.size
 //    val instance = listOf<String>()
 //    fun getInstances() = characteristic.printProperties()
 //

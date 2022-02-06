@@ -27,6 +27,6 @@ public class ApiCall {
     }
 
     public int getRipeness(List<Integer> ripeness) {
-
+        return 0
     }
 }
