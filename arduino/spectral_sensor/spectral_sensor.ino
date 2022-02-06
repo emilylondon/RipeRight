@@ -108,17 +108,17 @@ void loop() {
   {
     //Near IR readings
     Serial.print(" Reading: R[");
-    Serial.print(sensor.getCalibratedR(), 2);
+    Serial.print(String(sensor.getCalibratedR(),2));
     Serial.print("] S[");
-    Serial.print(sensor.getCalibratedS(), 2);
+    Serial.print(String(sensor.getCalibratedS(),2));
     Serial.print("] T[");
-    Serial.print(sensor.getCalibratedT(), 2);
+    Serial.print(String(sensor.getCalibratedT(),2));
     Serial.print("] U[");
-    Serial.print(sensor.getCalibratedU(), 2);
+    Serial.print(String(sensor.getCalibratedU(),2));
     Serial.print("] V[");
-    Serial.print(sensor.getCalibratedV(), 2);
+    Serial.print(String(sensor.getCalibratedV(),2));
     Serial.print("] W[");
-    Serial.print(sensor.getCalibratedW(), 2);
+    Serial.print(String(sensor.getCalibratedW(),2));
   }
 
   Serial.print("] tempF[");
