@@ -4,3 +4,9 @@
 * Call `npm install` then `npm start`
 * To run app, `expo start`
 * Open `localhost` link, download Expo Go app on phone and Connection mode from tunnel to LAN
+
+
+## Google cloud SDK for App Engine
+
+* Follow steps in https://cloud.google.com/sdk/docs/quickstart#deb
+
