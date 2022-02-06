@@ -21,6 +21,7 @@ import android.app.Activity
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -30,27 +31,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.punchthrough.blestarterappandroid.ble.ConnectionEventListener
-import com.punchthrough.blestarterappandroid.ble.ConnectionManager
-import com.punchthrough.blestarterappandroid.ble.isIndicatable
-import com.punchthrough.blestarterappandroid.ble.isNotifiable
-import com.punchthrough.blestarterappandroid.ble.isReadable
-import com.punchthrough.blestarterappandroid.ble.isWritable
-import com.punchthrough.blestarterappandroid.ble.isWritableWithoutResponse
-import com.punchthrough.blestarterappandroid.ble.toHexString
-import kotlinx.android.synthetic.main.activity_ble_operations.characteristics_recycler_view
-import kotlinx.android.synthetic.main.activity_ble_operations.log_scroll_view
-import kotlinx.android.synthetic.main.activity_ble_operations.log_text_view
-import kotlinx.android.synthetic.main.activity_ble_operations.mtu_field
-import kotlinx.android.synthetic.main.activity_ble_operations.request_mtu_button
+import com.punchthrough.blestarterappandroid.ble.*
+import kotlinx.android.synthetic.main.activity_ble_operations.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.selector
 import org.jetbrains.anko.yesButton
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import java.util.UUID
+import java.util.*
+
 
 class BleOperationsActivity : AppCompatActivity() {
 
@@ -94,17 +83,10 @@ class BleOperationsActivity : AppCompatActivity() {
             title = getString(R.string.ble_playground)
         }
         setupRecyclerView()
-        request_mtu_button.setOnClickListener {
-            if (mtu_field.text.isNotEmpty() && mtu_field.text.isNotBlank()) {
-                mtu_field.text.toString().toIntOrNull()?.let { mtu ->
-                    log("Requesting for MTU value of $mtu")
-                    ConnectionManager.requestMtu(device, mtu)
-                } ?: log("Invalid MTU value: ${mtu_field.text}")
-            } else {
-                log("Please specify a numeric value for desired ATT MTU (23-517)")
-            }
-            hideKeyboard()
-        }
+        checkRipeness.setOnClickListener(View.OnClickListener { view ->
+            val myIntent = Intent(view.context, results::class.java)
+            startActivityForResult(myIntent, 0)
+        })
     }
 
     override fun onDestroy() {
