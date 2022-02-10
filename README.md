@@ -6,7 +6,11 @@
 * Open `localhost` link, download Expo Go app on phone and Connection mode from tunnel to LAN
 
 
-## Google cloud SDK for App Engine
+## Using Google cloud AI Vertex to run ML model in python
 
-* Follow steps in https://cloud.google.com/sdk/docs/quickstart#deb
+* Go to https://console.cloud.google.com/home/dashboard?project=hacksc-riperight
+* Navigate to AI Platform -> Dashboard
+* Click view Notebook instances
+* Find the notebook called "riperightdata" and click "Open Jupyterlab"
+* Along the left side, click model.ipynb
 
